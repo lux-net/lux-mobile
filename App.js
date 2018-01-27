@@ -8,9 +8,12 @@ import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
+  TouchableOpacity,
   Text,
   View
 } from 'react-native';
+
+import Map from './Map'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -20,18 +23,23 @@ const instructions = Platform.select({
 });
 
 export default class App extends Component<{}> {
+
+  renderBackButton() {
+    return (
+      <TouchableOpacity
+        style={styles.back}
+        onPress={() => this.setState({ Component: null })}
+      >
+        <Text style={{ fontWeight: 'bold', fontSize: 30 }}>&larr;</Text>
+      </TouchableOpacity>
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <Map />
+        {Component && this.renderBackButton()}
       </View>
     );
   }
@@ -39,19 +47,31 @@ export default class App extends Component<{}> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  scrollview: {
+    alignItems: 'center',
+    paddingVertical: 40,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  button: {
+    flex: 1,
+    marginTop: 10,
+    backgroundColor: 'rgba(220,220,220,0.7)',
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 20,
+  },
+  back: {
+    position: 'absolute',
+    top: 20,
+    left: 12,
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    padding: 12,
+    borderRadius: 20,
+    width: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
