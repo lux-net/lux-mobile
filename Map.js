@@ -50,7 +50,6 @@ class AnimatedMarkers extends React.Component {
     return (
       <View style={styles.container}>
         <MapView
-          provider={this.props.provider}
           style={styles.map}
           initialRegion={{
             latitude: LATITUDE,
@@ -64,14 +63,14 @@ class AnimatedMarkers extends React.Component {
             coordinate={this.state.coordinate}
           />
         </MapView>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <TouchableOpacity
             onPress={() => this.animate()}
             style={[styles.bubble, styles.button]}
           >
             <Text>Animate</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     );
   }

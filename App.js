@@ -12,7 +12,7 @@ import {
   Text,
   View
 } from 'react-native';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 import Map from './Map'
 
 const instructions = Platform.select({
@@ -30,7 +30,18 @@ export default class App extends Component<{}> {
         style={styles.back}
         onPress={() => this.setState({ Component: null })}
       >
-        <Text style={{ fontWeight: 'bold', fontSize: 30 }}>&larr;</Text>
+        <Icon style={styles.backIcon} name="ios-menu" size={30} color="#000" />
+      </TouchableOpacity>
+    );
+  }
+
+  renderLocateButton() {
+    return (
+      <TouchableOpacity
+        style={styles.locate}
+        onPress={() => this.setState({ Component: null })}
+      >
+        <Icon style={styles.backIcon} name="md-locate" size={30} color="#000" />
       </TouchableOpacity>
     );
   }
@@ -39,7 +50,8 @@ export default class App extends Component<{}> {
     return (
       <View style={styles.container}>
         <Map />
-        {Component && this.renderBackButton()}
+        {this.renderBackButton()}
+        {this.renderLocateButton()}
       </View>
     );
   }
@@ -65,13 +77,23 @@ const styles = StyleSheet.create({
   },
   back: {
     position: 'absolute',
-    top: 20,
-    left: 12,
-    backgroundColor: 'rgba(255,255,255,0.4)',
-    padding: 12,
-    borderRadius: 20,
-    width: 80,
+    top: 16,
+    left: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  locate: {
+    position: 'absolute',
+    bottom: 16,
+    right: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backIcon: {
+    textShadowColor: 'white',
+    elevation: 1,
+    shadowOpacity: 0.5,
+    textShadowRadius: 5,
+    textShadowOffset: { width: 0, height: 1 }
+  }
 });
