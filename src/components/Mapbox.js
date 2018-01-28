@@ -27,8 +27,6 @@ class MyMapbox extends Component {
       latitude: properties.visibleBounds[1][1]
     }
 
-    console.log(`http://maps.google.com/maps?q=${latitude},${longitude}&z=21`)
-
     this.props.onChange({ latitude, longitude, northEast, southWest })
   }
   // renderMarker(marker) {
@@ -55,8 +53,6 @@ class MyMapbox extends Component {
       image = require('../assets/escuro.png')
       if (marker.iluminated) image = require('../assets/iluminado.png')
     }
-
-    console.log(marker)
 
     return (
       <Mapbox.PointAnnotation

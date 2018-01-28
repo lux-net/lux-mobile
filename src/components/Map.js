@@ -11,22 +11,12 @@ const LATITUDE = -12.9774804
 const LONGITUDE = -38.4595979
 const LATITUDE_DELTA = 0.00222
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
+const iluminadoNaoConfirmadoIco = require('../assets/iluminado-nao-confirmado.png')
+const escuroNaoConfirmadoIco = require('../assets/escuro-nao-confirmado.png')
+const iluminadoIco = require('../assets/iluminado.png')
+const escuroIco = require('../assets/escuro.png')
 
-class Map extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-      coordinate: new MapView.AnimatedRegion({
-        latitude: LATITUDE,
-        longitude: LONGITUDE
-      }),
-      markers: []
-    }
-  }
-
+class Map extends React.PureComponent {
   animateToRegion({ latitude, longitude }) {
     this.mapview.animateToRegion({
       latitude,
@@ -56,11 +46,11 @@ class Map extends React.Component {
     let image
 
     if (marker.confirmedAt) {
-      if (marker.iluminated) image = require('../assets/iluminado-nao-confirmado.png')
-      image = require('../assets/escuro-nao-confirmado.png')
+      if (marker.iluminated) image = iluminadoNaoConfirmadoIco
+      image = escuroNaoConfirmadoIco
     } else {
-      image = require('../assets/escuro.png')
-      if (marker.iluminated) image = require('../assets/iluminado.png')
+      image = escuroIco
+      if (marker.iluminated) image = iluminadoIco
     }
 
     return (<MapView.Marker key={marker.__identity} coordinate={marker.coordinate} image={image} />)
@@ -74,8 +64,8 @@ class Map extends React.Component {
           onRegionChangeComplete={(position) => this._onChange(position)}
           ref={mapview => { this.mapview = mapview }}
           initialRegion={{
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
+            latitude: LATITUDE,
+            longitude: LONGITUDE,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA
           }}

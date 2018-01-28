@@ -44,7 +44,6 @@ class App extends Component {
   onMapChange(coordinate) {
     this.setState({ currentCoordinate: coordinate })
     this.loadCurrentCoordinateLightMarkers()
-    console.log(`http://maps.google.com/maps?q=${coordinate.latitude.toFixed(7)},${coordinate.longitude.toFixed(7)}&z=21`)
   }
 
   loadCurrentCoordinateLightMarkers() {

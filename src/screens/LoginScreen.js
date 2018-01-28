@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {
   View, StyleSheet, TouchableOpacity,
-  Text, Button, Image
+  Text, Image
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { connect } from 'react-redux'

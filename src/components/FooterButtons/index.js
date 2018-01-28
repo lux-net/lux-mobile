@@ -28,7 +28,6 @@ const Button = ({ children, onPress, style, textStyle }) => {
 }
 Button.propTypes = {
   children: PropTypes.node,
-  style: View.propTypes.style,
   textStyle: Text.propTypes.style,
   onPress: PropTypes.func
 }
@@ -49,7 +48,6 @@ const FooterButtons = ({ style, onPressFindMe, onPressOn, onPressOff, loading })
 )
 
 FooterButtons.propTypes = {
-  style: View.propTypes.style,
   loading: PropTypes.bool,
   onPressFindMe: PropTypes.func,
   onPressOn: PropTypes.func,
