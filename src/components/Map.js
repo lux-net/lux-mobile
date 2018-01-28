@@ -52,6 +52,20 @@ class Map extends React.Component {
     this.props.onChange({ latitude, longitude, latitudeDelta, longitudeDelta, northEast, southWest })
   }
 
+  renderMarker(marker) {
+    let image
+
+    if (marker.confirmedAt) {
+      if (marker.iluminated) image = require('../assets/iluminado-nao-confirmado.png')
+      image = require('../assets/escuro-nao-confirmado.png')
+    } else {
+      image = require('../assets/escuro.png')
+      if (marker.iluminated) image = require('../assets/iluminado.png')
+    }
+
+    return (<MapView.Marker key={marker.__identity} coordinate={marker.coordinate} image={image} />)
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -66,12 +80,7 @@ class Map extends React.Component {
             longitudeDelta: LONGITUDE_DELTA
           }}
         >
-
-          {this.props.markers.map((marker) => (
-            <MapView.Marker key={marker.__identity}
-              coordinate={marker.coordinate}
-            />
-          ))}
+          {this.props.markers.map((marker) => this.renderMarker(marker))}
         </MapView>
       </View>
     )

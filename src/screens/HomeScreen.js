@@ -66,16 +66,19 @@ class App extends Component {
 
         <View pointerEvents="none" style={styles.currentLocationMarker}>
           <Image pointerEvents="none"
-            style={{ width: 51, height: 51 }}
-            source={require('../assets/mark.png')} />
+            style={{ width: 101, height: 101 }}
+            source={require('../assets/cursor.png')} />
         </View>
 
         <TouchableOpacity style={styles.back} onPress={this.openMenu}>
-          <Icon style={styles.backIcon} name="ios-menu" size={30} color="#000" />
+          <Image pointerEvents="none"
+            style={{ width: 31, height: 31 }}
+            source={require('../assets/menu.png')} />
         </TouchableOpacity>
 
         <FooterButtons
           onPressFindMe={this.findMe}
+          loading={this.props.lightMarkers.isAdding}
           onPressOn={() => this.onPressPower(true)}
           onPressOff={() => this.onPressPower(false)}
           style={{ position: 'absolute', bottom: 16, left: 0, right: 0 }} />
@@ -87,6 +90,8 @@ class App extends Component {
 App.propTypes = {
   navigation: PropTypes.any,
   lightMarkers: PropTypes.shape({
+    isLoading: PropTypes.bool,
+    isAdding: PropTypes.bool,
     data: PropTypes.array
   }).isRequired,
   addLightMarker: PropTypes.func,

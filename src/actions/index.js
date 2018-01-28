@@ -5,7 +5,7 @@ export const saveFacebookToken = (token) => ({
   type: AUTH,
   payload: async () => {
     try {
-      console.log(token)
+      console.log(`http://lux.rodolfosilva.com:1003/login`, { token })
       const { data } = await axios.post(`http://lux.rodolfosilva.com:1003/login`, { token })
       return data
     } catch (error) {
@@ -18,6 +18,7 @@ export const loadLightMarkers = ({ latitude, longitude, latitudeDelta, longitude
   type: LOAD_LIGHT_MARKERS,
   payload: async () => {
     try {
+      console.log(`http://lux.rodolfosilva.com:1003/light-markers?northEast[latitude]=${northEast.latitude}&northEast[longitude]=${northEast.longitude}&southWest[latitude]=${southWest.latitude}&southWest[longitude]=${southWest.longitude}`)
       const { data } = await axios.get(`http://lux.rodolfosilva.com:1003/light-markers?northEast[latitude]=${northEast.latitude}&northEast[longitude]=${northEast.longitude}&southWest[latitude]=${southWest.latitude}&southWest[longitude]=${southWest.longitude}`)
       return data
     } catch (error) {
@@ -36,8 +37,6 @@ export const addLightMarker = ({ latitude, longitude, iluminated }) => ({
         },
         iluminated
       })
-
-      console.log(data)
       return data
     } catch (error) {
       console.log('ERROR', error)

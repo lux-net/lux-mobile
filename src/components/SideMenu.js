@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { NavigationActions } from 'react-navigation'
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const styles = {
   container: {
@@ -9,9 +11,11 @@ const styles = {
     flex: 1
   },
   navItemStyle: {
-    padding: 10
+    paddingVertical: 16
   },
   navSectionStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'lightgrey'
   },
   sectionHeadingStyle: {
@@ -19,8 +23,7 @@ const styles = {
     paddingHorizontal: 5
   },
   footerContainer: {
-    padding: 20,
-    backgroundColor: 'lightgrey'
+    paddingBottom: 16
   }
 }
 
@@ -49,7 +52,7 @@ class SideMenu extends Component {
         <ScrollView>
           <View>
             <Text style={styles.sectionHeadingStyle}>
-              Section 1
+              Nome do fulano
             </Text>
             <View style={styles.navSectionStyle}>
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page1')}>
@@ -62,23 +65,19 @@ class SideMenu extends Component {
               Section 2
             </Text>
             <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page2')}>
-                Page2
-              </Text>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
-                Page3
-              </Text>
+              <Ionicon style={{ marginLeft: 16, marginRight: 16 }} name="md-exit" size={20} color="#5C2D91" />
               <Text style={styles.navItemStyle} onPress={this.navigateToLogin()}>
                 Logout
               </Text>
-              {/* <TouchableOpacity style={styles.navItemStyle} onPress={}>
-                Logout
-              </TouchableOpacity> */}
             </View>
           </View>
         </ScrollView>
         <View style={styles.footerContainer}>
-          <Text>This is my fixed footer</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Text>Feito com muito</Text>
+            <Icon style={{ marginHorizontal: 4 }} name="sleep" size={20} color="#5C2D91" />
+            <Text>pela AgzHack</Text>
+          </View>
         </View>
       </View>
     )
