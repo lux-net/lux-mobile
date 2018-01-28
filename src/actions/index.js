@@ -1,11 +1,24 @@
 import axios from 'axios'
-import { LOAD_LIGHT_MARKERS, ADD_LIGHT_MARKER } from '../constants/ActionTypes'
+import { LOAD_LIGHT_MARKERS, ADD_LIGHT_MARKER, AUTH } from '../constants/ActionTypes'
 
-export const loadLightMarkers = () => ({
+export const saveFacebookToken = (token) => ({
+  type: AUTH,
+  payload: async () => {
+    try {
+      console.log(token)
+      const { data } = await axios.post(`http://lux.rodolfosilva.com:1003/login`, { token })
+      return data
+    } catch (error) {
+      return []
+    }
+  }
+})
+
+export const loadLightMarkers = ({ latitude, longitude, latitudeDelta, longitudeDelta, northEast, southWest }) => ({
   type: LOAD_LIGHT_MARKERS,
   payload: async () => {
     try {
-      const { data } = await axios.get('http://lux.rodolfosilva.com:1003/light-markers')
+      const { data } = await axios.get(`http://lux.rodolfosilva.com:1003/light-markers?northEast[latitude]=${northEast.latitude}&northEast[longitude]=${northEast.longitude}&southWest[latitude]=${southWest.latitude}&southWest[longitude]=${southWest.longitude}`)
       return data
     } catch (error) {
       return []
@@ -27,7 +40,7 @@ export const addLightMarker = ({ latitude, longitude, iluminated }) => ({
       console.log(data)
       return data
     } catch (error) {
-      console.log(error)
+      console.log('ERROR', error)
       return []
     }
   }

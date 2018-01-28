@@ -1,17 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  View
-} from 'react-native'
-
+import { StyleSheet, Image, TouchableOpacity, View } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Map from '../components/Map'
 import FooterButtons from '../components/FooterButtons'
 import { loadLightMarkers, addLightMarker } from '../actions/index'
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -39,25 +34,26 @@ class App extends Component {
 
   async findMe() {
     await this.goToCurrentLocation()
-    this.props.loadLightMarkers()
+    this.loadCurrentCoordinateLightMarkers()
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.findMe()
-    }, 1500)
+    setTimeout(() => { this.findMe() }, 1500)
   }
 
-  onMapChange({ latitude, longitude }) {
-    this.setState({ currentCoordinate: { latitude, longitude } })
-    console.log({ latitude, longitude })
-    console.log(`http://maps.google.com/maps?q=${latitude.toFixed(7)},${longitude.toFixed(7)}&z=21`)
+  onMapChange(coordinate) {
+    this.setState({ currentCoordinate: coordinate })
+    this.loadCurrentCoordinateLightMarkers()
+    console.log(`http://maps.google.com/maps?q=${coordinate.latitude.toFixed(7)},${coordinate.longitude.toFixed(7)}&z=21`)
+  }
+
+  loadCurrentCoordinateLightMarkers() {
+    this.props.loadLightMarkers(this.state.currentCoordinate)
   }
 
   async onPressPower(iluminated) {
-    // console.log(`Has power?`, hasPower, this.state.currentCoordinate)
     await this.props.addLightMarker({ ...this.state.currentCoordinate, iluminated })
-    this.props.loadLightMarkers()
+    this.loadCurrentCoordinateLightMarkers()
   }
 
   render() {

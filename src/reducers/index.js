@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { LOAD_LIGHT_MARKERS, ADD_LIGHT_MARKER } from '../constants/ActionTypes'
+import { LOAD_LIGHT_MARKERS, ADD_LIGHT_MARKER, AUTH } from '../constants/ActionTypes'
 
 // Handle the action
 const lightMarkers = (state = { data: [] }, action) => {
@@ -27,6 +27,28 @@ const lightMarkers = (state = { data: [] }, action) => {
   }
 }
 
+// Handle the action
+const auth = (state = { data: [] }, action) => {
+  switch (action.type) {
+    case `${AUTH}_PENDING`:
+      return state
+
+    case `${AUTH}_FULFILLED`:
+      return {
+        isFulfilled: true,
+        data: action.payload
+      }
+
+    case `${AUTH}_REJECTED`:
+      return {
+        isRejected: true,
+        data: [],
+        error: action.payload
+      }
+    default: return state
+  }
+}
+
 export default combineReducers({
-  lightMarkers
+  lightMarkers, auth
 })

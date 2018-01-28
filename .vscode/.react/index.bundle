@@ -58307,7 +58307,11 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   var _HomeScreen2 = _interopRequireDefault(_HomeScreen);
 
-  var _SideMenu = require(_dependencyMap[4], "../components/SideMenu");
+  var _LoginScreen = require(_dependencyMap[4], "./LoginScreen");
+
+  var _LoginScreen2 = _interopRequireDefault(_LoginScreen);
+
+  var _SideMenu = require(_dependencyMap[5], "../components/SideMenu");
 
   var _SideMenu2 = _interopRequireDefault(_SideMenu);
 
@@ -58324,7 +58328,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 8
+          lineNumber: 9
         }
       },
       _react2.default.createElement(
@@ -58332,7 +58336,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
         {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 9
+            lineNumber: 10
           }
         },
         "Profile Screen"
@@ -58350,8 +58354,31 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }, {
     contentComponent: _SideMenu2.default
   });
-  exports.default = RootDrawer;
-},488,[108,489,12,554,674],"LuxApp/src/screens/index.js");
+  var AppNavigator = (0, _reactNavigation.StackNavigator)({
+    Login: {
+      screen: _LoginScreen2.default
+    },
+    Drawer: {
+      screen: function screen(_ref) {
+        var navigation = _ref.navigation;
+        return _react2.default.createElement(RootDrawer, {
+          screenProps: {
+            rootNavigation: navigation
+          },
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 40
+          }
+        });
+      }
+    }
+  }, {
+    index: 0,
+    initialRouteName: 'Login',
+    headerMode: 'none'
+  });
+  exports.default = AppNavigator;
+},488,[108,489,12,554,681,674],"LuxApp/src/screens/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = {
     get createNavigationContainer() {
@@ -68265,7 +68292,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 return regeneratorRuntime.awrap(this.goToCurrentLocation());
 
               case 2:
-                this.props.loadLightMarkers();
+                this.loadCurrentCoordinateLightMarkers();
 
               case 3:
               case "end":
@@ -68285,20 +68312,17 @@ __d(function (global, require, module, exports, _dependencyMap) {
       }
     }, {
       key: "onMapChange",
-      value: function onMapChange(_ref2) {
-        var latitude = _ref2.latitude,
-            longitude = _ref2.longitude;
+      value: function onMapChange(coordinate) {
         this.setState({
-          currentCoordinate: {
-            latitude: latitude,
-            longitude: longitude
-          }
+          currentCoordinate: coordinate
         });
-        console.log({
-          latitude: latitude,
-          longitude: longitude
-        });
-        console.log("http://maps.google.com/maps?q=" + latitude.toFixed(7) + "," + longitude.toFixed(7) + "&z=21");
+        this.loadCurrentCoordinateLightMarkers();
+        console.log("http://maps.google.com/maps?q=" + coordinate.latitude.toFixed(7) + "," + coordinate.longitude.toFixed(7) + "&z=21");
+      }
+    }, {
+      key: "loadCurrentCoordinateLightMarkers",
+      value: function loadCurrentCoordinateLightMarkers() {
+        this.props.loadLightMarkers(this.state.currentCoordinate);
       }
     }, {
       key: "onPressPower",
@@ -68313,7 +68337,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 })));
 
               case 2:
-                this.props.loadLightMarkers();
+                this.loadCurrentCoordinateLightMarkers();
 
               case 3:
               case "end":
@@ -68333,7 +68357,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             style: styles.container,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 65
+              lineNumber: 61
             }
           },
           _react3.default.createElement(_Map2.default, {
@@ -68346,7 +68370,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 66
+              lineNumber: 62
             }
           }),
           _react3.default.createElement(
@@ -68356,7 +68380,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: styles.currentLocationMarker,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 71
+                lineNumber: 67
               }
             },
             _react3.default.createElement(_reactNative.Image, {
@@ -68368,7 +68392,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               source: require(_dependencyMap[9], '../assets/mark.png'),
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 72
+                lineNumber: 68
               }
             })
           ),
@@ -68379,7 +68403,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               onPress: this.openMenu,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 77
+                lineNumber: 73
               }
             },
             _react3.default.createElement(_Ionicons2.default, {
@@ -68389,7 +68413,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               color: "#000",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 78
+                lineNumber: 74
               }
             })
           ),
@@ -68409,7 +68433,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 81
+              lineNumber: 77
             }
           })
         );
@@ -68428,8 +68452,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
     loadLightMarkers: _propTypes2.default.func
   };
 
-  var mapStateToProps = function mapStateToProps(_ref3) {
-    var lightMarkers = _ref3.lightMarkers;
+  var mapStateToProps = function mapStateToProps(_ref2) {
+    var lightMarkers = _ref2.lightMarkers;
     return {
       lightMarkers: lightMarkers
     };
@@ -72817,27 +72841,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
           latitude: LATITUDE,
           longitude: LONGITUDE
         }),
-        markers: [{
-          coordinate: {
-            latitude: -12.24720942270704,
-            longitude: -38.97558370605111
-          }
-        }, {
-          coordinate: {
-            latitude: -12.247866679212539,
-            longitude: -38.975956197828054
-          }
-        }, {
-          coordinate: {
-            latitude: -12.248007238841016,
-            longitude: -38.97487862035632
-          }
-        }, {
-          coordinate: {
-            latitude: -12.247460071567463,
-            longitude: -38.9751317538321
-          }
-        }]
+        markers: []
       };
       return _this;
     }
@@ -72862,11 +72866,21 @@ __d(function (global, require, module, exports, _dependencyMap) {
             latitudeDelta = _ref2.latitudeDelta,
             longitudeDelta = _ref2.longitudeDelta;
         if (!this.props.onChange) return;
+        var northEast = {
+          latitude: latitude + latitudeDelta / 2,
+          longitude: longitude + longitudeDelta / 2
+        };
+        var southWest = {
+          latitude: latitude - latitudeDelta / 2,
+          longitude: longitude - longitudeDelta / 2
+        };
         this.props.onChange({
           latitude: latitude,
           longitude: longitude,
           latitudeDelta: latitudeDelta,
-          longitudeDelta: longitudeDelta
+          longitudeDelta: longitudeDelta,
+          northEast: northEast,
+          southWest: southWest
         });
       }
     }, {
@@ -72880,7 +72894,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             style: styles.container,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 51
+              lineNumber: 57
             }
           },
           _react3.default.createElement(
@@ -72901,16 +72915,16 @@ __d(function (global, require, module, exports, _dependencyMap) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 52
+                lineNumber: 58
               }
             },
-            this.props.markers.map(function (marker, key) {
+            this.props.markers.map(function (marker) {
               return _react3.default.createElement(_reactNativeMaps2.default.Marker, {
-                key: key,
+                key: marker.__identity,
                 coordinate: marker.coordinate,
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 65
+                  lineNumber: 71
                 }
               });
             })
@@ -74890,7 +74904,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.addLightMarker = exports.loadLightMarkers = undefined;
+  exports.addLightMarker = exports.loadLightMarkers = exports.saveFacebookToken = undefined;
 
   var _this = this;
 
@@ -74902,9 +74916,9 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-  var loadLightMarkers = exports.loadLightMarkers = function loadLightMarkers() {
+  var saveFacebookToken = exports.saveFacebookToken = function saveFacebookToken(token) {
     return {
-      type: _ActionTypes.LOAD_LIGHT_MARKERS,
+      type: _ActionTypes.AUTH,
       payload: function payload() {
         var _ref, data;
 
@@ -74913,35 +74927,41 @@ __d(function (global, require, module, exports, _dependencyMap) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                _context.next = 3;
-                return regeneratorRuntime.awrap(_axios2.default.get('http://lux.rodolfosilva.com:1003/light-markers'));
+                console.log(token);
+                _context.next = 4;
+                return regeneratorRuntime.awrap(_axios2.default.post("http://lux.rodolfosilva.com:1003/login", {
+                  token: token
+                }));
 
-              case 3:
+              case 4:
                 _ref = _context.sent;
                 data = _ref.data;
                 return _context.abrupt("return", data);
 
-              case 8:
-                _context.prev = 8;
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context["catch"](0);
                 return _context.abrupt("return", []);
 
-              case 11:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, null, _this, [[0, 8]]);
+        }, null, _this, [[0, 9]]);
       }
     };
   };
 
-  var addLightMarker = exports.addLightMarker = function addLightMarker(_ref2) {
+  var loadLightMarkers = exports.loadLightMarkers = function loadLightMarkers(_ref2) {
     var latitude = _ref2.latitude,
         longitude = _ref2.longitude,
-        iluminated = _ref2.iluminated;
+        latitudeDelta = _ref2.latitudeDelta,
+        longitudeDelta = _ref2.longitudeDelta,
+        northEast = _ref2.northEast,
+        southWest = _ref2.southWest;
     return {
-      type: _ActionTypes.ADD_LIGHT_MARKER,
+      type: _ActionTypes.LOAD_LIGHT_MARKERS,
       payload: function payload() {
         var _ref3, data;
 
@@ -74951,6 +74971,43 @@ __d(function (global, require, module, exports, _dependencyMap) {
               case 0:
                 _context2.prev = 0;
                 _context2.next = 3;
+                return regeneratorRuntime.awrap(_axios2.default.get("http://lux.rodolfosilva.com:1003/light-markers?northEast[latitude]=" + northEast.latitude + "&northEast[longitude]=" + northEast.longitude + "&southWest[latitude]=" + southWest.latitude + "&southWest[longitude]=" + southWest.longitude));
+
+              case 3:
+                _ref3 = _context2.sent;
+                data = _ref3.data;
+                return _context2.abrupt("return", data);
+
+              case 8:
+                _context2.prev = 8;
+                _context2.t0 = _context2["catch"](0);
+                return _context2.abrupt("return", []);
+
+              case 11:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, null, _this, [[0, 8]]);
+      }
+    };
+  };
+
+  var addLightMarker = exports.addLightMarker = function addLightMarker(_ref4) {
+    var latitude = _ref4.latitude,
+        longitude = _ref4.longitude,
+        iluminated = _ref4.iluminated;
+    return {
+      type: _ActionTypes.ADD_LIGHT_MARKER,
+      payload: function payload() {
+        var _ref5, data;
+
+        return regeneratorRuntime.async(function payload$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
                 return regeneratorRuntime.awrap(_axios2.default.post('http://lux.rodolfosilva.com:1003/light-markers', {
                   lightMarker: {
                     coordinate: {
@@ -74962,20 +75019,20 @@ __d(function (global, require, module, exports, _dependencyMap) {
                 }));
 
               case 3:
-                _ref3 = _context2.sent;
-                data = _ref3.data;
+                _ref5 = _context3.sent;
+                data = _ref5.data;
                 console.log(data);
-                return _context2.abrupt("return", data);
+                return _context3.abrupt("return", data);
 
               case 9:
-                _context2.prev = 9;
-                _context2.t0 = _context2["catch"](0);
-                console.log(_context2.t0);
-                return _context2.abrupt("return", []);
+                _context3.prev = 9;
+                _context3.t0 = _context3["catch"](0);
+                console.log('ERROR', _context3.t0);
+                return _context3.abrupt("return", []);
 
               case 13:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
         }, null, _this, [[0, 9]]);
@@ -75968,6 +76025,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
   });
   var LOAD_LIGHT_MARKERS = exports.LOAD_LIGHT_MARKERS = 'LOAD_LIGHT_MARKERS';
   var ADD_LIGHT_MARKER = exports.ADD_LIGHT_MARKER = 'ADD_LIGHT_MARKER';
+  var AUTH = exports.AUTH = 'AUTH';
 },672,[],"LuxApp/src/constants/ActionTypes.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   module.exports = require(_dependencyMap[0], "react-native/Libraries/Image/AssetRegistry").registerAsset({
@@ -76054,6 +76112,13 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
   };
 
+  var resetAction = _reactNavigation.NavigationActions.reset({
+    index: 0,
+    actions: [_reactNavigation.NavigationActions.navigate({
+      routeName: 'Login'
+    })]
+  });
+
   var SideMenu = _wrapComponent("SideMenu")(function (_Component) {
     _inherits(SideMenu, _Component);
 
@@ -76076,6 +76141,10 @@ __d(function (global, require, module, exports, _dependencyMap) {
 
           _this.props.navigation.dispatch(navigateAction);
         };
+      }, _this.navigateToLogin = function () {
+        return function () {
+          _this.props.screenProps.rootNavigation.dispatch(resetAction);
+        };
       }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -76088,7 +76157,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             style: styles.container,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 37
+              lineNumber: 48
             }
           },
           _react3.default.createElement(
@@ -76096,7 +76165,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
             {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 38
+                lineNumber: 49
               }
             },
             _react3.default.createElement(
@@ -76104,7 +76173,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               {
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 39
+                  lineNumber: 50
                 }
               },
               _react3.default.createElement(
@@ -76113,7 +76182,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                   style: styles.sectionHeadingStyle,
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 40
+                    lineNumber: 51
                   }
                 },
                 "Section 1"
@@ -76124,7 +76193,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                   style: styles.navSectionStyle,
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 43
+                    lineNumber: 54
                   }
                 },
                 _react3.default.createElement(
@@ -76134,7 +76203,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                     onPress: this.navigateToScreen('Page1'),
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 44
+                      lineNumber: 55
                     }
                   },
                   "Page1"
@@ -76146,7 +76215,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               {
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 49
+                  lineNumber: 60
                 }
               },
               _react3.default.createElement(
@@ -76155,7 +76224,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                   style: styles.sectionHeadingStyle,
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 50
+                    lineNumber: 61
                   }
                 },
                 "Section 2"
@@ -76166,7 +76235,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                   style: styles.navSectionStyle,
                   __source: {
                     fileName: _jsxFileName,
-                    lineNumber: 53
+                    lineNumber: 64
                   }
                 },
                 _react3.default.createElement(
@@ -76176,7 +76245,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
                     onPress: this.navigateToScreen('Page2'),
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 54
+                      lineNumber: 65
                     }
                   },
                   "Page2"
@@ -76188,10 +76257,22 @@ __d(function (global, require, module, exports, _dependencyMap) {
                     onPress: this.navigateToScreen('Page3'),
                     __source: {
                       fileName: _jsxFileName,
-                      lineNumber: 57
+                      lineNumber: 68
                     }
                   },
                   "Page3"
+                ),
+                _react3.default.createElement(
+                  _reactNative.Text,
+                  {
+                    style: styles.navItemStyle,
+                    onPress: this.navigateToLogin(),
+                    __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 71
+                    }
+                  },
+                  "Logout"
                 )
               )
             )
@@ -76202,7 +76283,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               style: styles.footerContainer,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 63
+                lineNumber: 80
               }
             },
             _react3.default.createElement(
@@ -76210,7 +76291,7 @@ __d(function (global, require, module, exports, _dependencyMap) {
               {
                 __source: {
                   fileName: _jsxFileName,
-                  lineNumber: 64
+                  lineNumber: 81
                 }
               },
               "This is my fixed footer"
@@ -76250,16 +76331,8 @@ __d(function (global, require, module, exports, _dependencyMap) {
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
   var middlewares = [_reduxThunk2.default, (0, _reduxPromiseMiddleware2.default)()];
-
-  if (process.env.NODE_ENV === "development") {
-    var _require = require(_dependencyMap[4], "redux-logger"),
-        logger = _require.logger;
-
-    middlewares.push(logger);
-  }
-
   exports.default = (0, _redux.createStore)(_reducers2.default, _redux.applyMiddleware.apply(undefined, middlewares));
-},675,[565,676,677,678,680],"LuxApp/src/store/index.js");
+},675,[565,676,677,678],"LuxApp/src/store/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
   'use strict';
 
@@ -76327,8 +76400,37 @@ __d(function (global, require, module, exports, _dependencyMap) {
     }
   };
 
+  var auth = function auth() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
+      data: []
+    };
+    var action = arguments[1];
+
+    switch (action.type) {
+      case _ActionTypes.AUTH + "_PENDING":
+        return state;
+
+      case _ActionTypes.AUTH + "_FULFILLED":
+        return {
+          isFulfilled: true,
+          data: action.payload
+        };
+
+      case _ActionTypes.AUTH + "_REJECTED":
+        return {
+          isRejected: true,
+          data: [],
+          error: action.payload
+        };
+
+      default:
+        return state;
+    }
+  };
+
   exports.default = (0, _redux.combineReducers)({
-    lightMarkers: lightMarkers
+    lightMarkers: lightMarkers,
+    auth: auth
   });
 },677,[565,672],"LuxApp/src/reducers/index.js");
 __d(function (global, require, module, exports, _dependencyMap) {
@@ -76516,621 +76618,1069 @@ __d(function (global, require, module, exports, _dependencyMap) {
   }
 },679,[],"redux-promise-middleware/dist/isPromise.js");
 __d(function (global, require, module, exports, _dependencyMap) {
-  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-  !function (e, t) {
-    "object" == typeof exports && "undefined" != typeof module ? t(exports) : "function" == typeof define && define.amd ? define(["exports"], t) : t(e.reduxLogger = e.reduxLogger || {});
-  }(this, function (e) {
-    "use strict";
+  var _this = this,
+      _jsxFileName = "/Users/rodolfosilva/workspace/react-native/LuxApp/src/screens/LoginScreen.js";
 
-    function t(e, t) {
-      e.super_ = t, e.prototype = Object.create(t.prototype, {
-        constructor: {
-          value: e,
-          enumerable: !1,
-          writable: !0,
-          configurable: !0
-        }
-      });
-    }
+  var _reactNativeFbsdk = require(_dependencyMap[0], "react-native-fbsdk");
 
-    function r(e, t) {
-      Object.defineProperty(this, "kind", {
-        value: e,
-        enumerable: !0
-      }), t && t.length && Object.defineProperty(this, "path", {
-        value: t,
-        enumerable: !0
-      });
-    }
+  var _react = require(_dependencyMap[1], "react");
 
-    function n(e, t, r) {
-      n.super_.call(this, "E", e), Object.defineProperty(this, "lhs", {
-        value: t,
-        enumerable: !0
-      }), Object.defineProperty(this, "rhs", {
-        value: r,
-        enumerable: !0
-      });
-    }
+  var _react2 = _interopRequireDefault(_react);
 
-    function o(e, t) {
-      o.super_.call(this, "N", e), Object.defineProperty(this, "rhs", {
-        value: t,
-        enumerable: !0
-      });
-    }
+  var _reactNative = require(_dependencyMap[2], "react-native");
 
-    function i(e, t) {
-      i.super_.call(this, "D", e), Object.defineProperty(this, "lhs", {
-        value: t,
-        enumerable: !0
-      });
-    }
+  var _reactRedux = require(_dependencyMap[3], "react-redux");
 
-    function a(e, t, r) {
-      a.super_.call(this, "A", e), Object.defineProperty(this, "index", {
-        value: t,
-        enumerable: !0
-      }), Object.defineProperty(this, "item", {
-        value: r,
-        enumerable: !0
-      });
-    }
+  var _actions = require(_dependencyMap[4], "../actions");
 
-    function f(e, t, r) {
-      var n = e.slice((r || t) + 1 || e.length);
-      return e.length = t < 0 ? e.length + t : t, e.push.apply(e, n), e;
-    }
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-    function u(e) {
-      var t = "undefined" == typeof e ? "undefined" : N(e);
-      return "object" !== t ? t : e === Math ? "math" : null === e ? "null" : Array.isArray(e) ? "array" : "[object Date]" === Object.prototype.toString.call(e) ? "date" : "function" == typeof e.toString && /^\/.*\//.test(e.toString()) ? "regexp" : "object";
-    }
+  var doLogin = function doLogin() {
+    var result, _ref, accessToken;
 
-    function l(e, t, r, c, s, d, p) {
-      s = s || [], p = p || [];
-      var g = s.slice(0);
+    return regeneratorRuntime.async(function doLogin$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return regeneratorRuntime.awrap(_reactNativeFbsdk.LoginManager.logInWithReadPermissions(['public_profile']));
 
-      if ("undefined" != typeof d) {
-        if (c) {
-          if ("function" == typeof c && c(g, d)) return;
+          case 3:
+            result = _context.sent;
 
-          if ("object" === ("undefined" == typeof c ? "undefined" : N(c))) {
-            if (c.prefilter && c.prefilter(g, d)) return;
-
-            if (c.normalize) {
-              var h = c.normalize(g, d, e, t);
-              h && (e = h[0], t = h[1]);
+            if (!result.isCancelled) {
+              _context.next = 6;
+              break;
             }
-          }
-        }
 
-        g.push(d);
+            return _context.abrupt("return");
+
+          case 6:
+            _context.next = 8;
+            return regeneratorRuntime.awrap(_reactNativeFbsdk.AccessToken.getCurrentAccessToken());
+
+          case 8:
+            _ref = _context.sent;
+            accessToken = _ref.accessToken;
+            (0, _actions.saveFacebookToken)(accessToken.toString());
+            console.log(accessToken.toString());
+            _context.next = 17;
+            break;
+
+          case 14:
+            _context.prev = 14;
+            _context.t0 = _context["catch"](0);
+            alert('Login fail with error: ' + _context.t0);
+
+          case 17:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, null, _this, [[0, 14]]);
+  };
+
+  var LoginScreen = function LoginScreen(_ref2) {
+    var saveFacebookToken = _ref2.saveFacebookToken,
+        navigation = _ref2.navigation;
+    return _react2.default.createElement(
+      _reactNative.View,
+      {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 22
+        }
+      },
+      _react2.default.createElement(_reactNative.Button, {
+        onPress: function onPress() {
+          return doLogin().then(function () {
+            return navigation.navigate('Drawer');
+          });
+        },
+        title: "Fazer login",
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 23
+        }
+      })
+    );
+  };
+
+  var mapStateToProps = function mapStateToProps() {
+    return {};
+  };
+
+  var mapDispatchToProps = {
+    saveFacebookToken: _actions.saveFacebookToken
+  };
+  exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(LoginScreen);
+},681,[682,108,12,555,645],"LuxApp/src/screens/LoginScreen.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  module.exports = {
+    get ShareOpenGraphAction() {
+      return require(_dependencyMap[0], './models/FBShareOpenGraphAction');
+    },
+
+    get ShareOpenGraphObject() {
+      return require(_dependencyMap[1], './models/FBShareOpenGraphObject');
+    },
+
+    get ShareOpenGraphValueContainer() {
+      return require(_dependencyMap[2], './models/FBShareOpenGraphValueContainer');
+    },
+
+    get AccessToken() {
+      return require(_dependencyMap[3], './FBAccessToken');
+    },
+
+    get AppEventsLogger() {
+      return require(_dependencyMap[4], './FBAppEventsLogger');
+    },
+
+    get AppInviteDialog() {
+      return require(_dependencyMap[5], './FBAppInviteDialog');
+    },
+
+    get GameRequestDialog() {
+      return require(_dependencyMap[6], './FBGameRequestDialog');
+    },
+
+    get GraphRequest() {
+      return require(_dependencyMap[7], './FBGraphRequest');
+    },
+
+    get GraphRequestManager() {
+      return require(_dependencyMap[8], './FBGraphRequestManager');
+    },
+
+    get LoginManager() {
+      return require(_dependencyMap[9], './FBLoginManager');
+    },
+
+    get MessageDialog() {
+      return require(_dependencyMap[10], './FBMessageDialog');
+    },
+
+    get ShareApi() {
+      return require(_dependencyMap[11], './FBShareApi');
+    },
+
+    get ShareDialog() {
+      return require(_dependencyMap[12], './FBShareDialog');
+    },
+
+    get LikeView() {
+      return require(_dependencyMap[13], './FBLikeView');
+    },
+
+    get LoginButton() {
+      return require(_dependencyMap[14], './FBLoginButton');
+    },
+
+    get SendButton() {
+      return require(_dependencyMap[15], './FBSendButton');
+    },
+
+    get ShareButton() {
+      return require(_dependencyMap[16], './FBShareButton');
+    }
+
+  };
+},682,[683,685,684,686,687,688,689,690,691,692,693,694,695,696,697,698,699],"react-native-fbsdk/js/index.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var ShareOpenGraphValueContainer = require(_dependencyMap[0], './FBShareOpenGraphValueContainer');
+
+  var ShareOpenGraphAction = function (_ShareOpenGraphValueC) {
+    _inherits(ShareOpenGraphAction, _ShareOpenGraphValueC);
+
+    function ShareOpenGraphAction(actionType) {
+      _classCallCheck(this, ShareOpenGraphAction);
+
+      var _this = _possibleConstructorReturn(this, (ShareOpenGraphAction.__proto__ || Object.getPrototypeOf(ShareOpenGraphAction)).call(this, null));
+
+      _this.actionType = actionType;
+      return _this;
+    }
+
+    return ShareOpenGraphAction;
+  }(ShareOpenGraphValueContainer);
+
+  module.exports = ShareOpenGraphAction;
+},683,[684],"react-native-fbsdk/js/models/FBShareOpenGraphAction.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  var ShareOpenGraphValueContainer = function () {
+    function ShareOpenGraphValueContainer(properties) {
+      _classCallCheck(this, ShareOpenGraphValueContainer);
+
+      this._properties = properties ? properties : {};
+    }
+
+    _createClass(ShareOpenGraphValueContainer, [{
+      key: "putNumber",
+      value: function putNumber(key, number) {
+        this._properties[key] = {
+          type: 'number',
+          value: number
+        };
+      }
+    }, {
+      key: "putObject",
+      value: function putObject(key, object) {
+        this._properties[key] = {
+          type: 'open-graph-object',
+          value: object
+        };
+      }
+    }, {
+      key: "putPhoto",
+      value: function putPhoto(key, photo) {
+        this._properties[key] = {
+          type: 'photo',
+          value: photo
+        };
+      }
+    }, {
+      key: "putString",
+      value: function putString(key, string) {
+        this._properties[key] = {
+          type: 'string',
+          value: string
+        };
+      }
+    }, {
+      key: "getEntry",
+      value: function getEntry(key) {
+        return this._properties[key];
+      }
+    }]);
+
+    return ShareOpenGraphValueContainer;
+  }();
+
+  module.exports = ShareOpenGraphValueContainer;
+},684,[],"react-native-fbsdk/js/models/FBShareOpenGraphValueContainer.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var ShareOpenGraphValueContainer = require(_dependencyMap[0], './FBShareOpenGraphValueContainer');
+
+  var ShareOpenGraphObject = function (_ShareOpenGraphValueC) {
+    _inherits(ShareOpenGraphObject, _ShareOpenGraphValueC);
+
+    function ShareOpenGraphObject() {
+      _classCallCheck(this, ShareOpenGraphObject);
+
+      return _possibleConstructorReturn(this, (ShareOpenGraphObject.__proto__ || Object.getPrototypeOf(ShareOpenGraphObject)).apply(this, arguments));
+    }
+
+    return ShareOpenGraphObject;
+  }(ShareOpenGraphValueContainer);
+
+  module.exports = ShareOpenGraphObject;
+},685,[684],"react-native-fbsdk/js/models/FBShareOpenGraphObject.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  var AccessToken = require(_dependencyMap[0], 'react-native').NativeModules.FBAccessToken;
+
+  var FBAccessToken = function () {
+    function FBAccessToken(tokenMap) {
+      _classCallCheck(this, FBAccessToken);
+
+      this.accessToken = tokenMap.accessToken;
+      this.permissions = tokenMap.permissions;
+      this.declinedPermissions = tokenMap.declinedPermissions;
+      this.applicationID = tokenMap.applicationID;
+      this.accessTokenSource = tokenMap.accessTokenSource;
+      this.userID = tokenMap.userID;
+      this.expirationTime = tokenMap.expirationTime;
+      this.lastRefreshTime = tokenMap.lastRefreshTime;
+      Object.freeze(this);
+    }
+
+    _createClass(FBAccessToken, [{
+      key: "getExpires",
+      value: function getExpires() {
+        return this.expirationTime;
+      }
+    }, {
+      key: "getPermissions",
+      value: function getPermissions() {
+        return this.permissions;
+      }
+    }, {
+      key: "getDeclinedPermissions",
+      value: function getDeclinedPermissions() {
+        return this.declinedPermissions;
+      }
+    }, {
+      key: "getLastRefresh",
+      value: function getLastRefresh() {
+        return this.lastRefreshTime;
+      }
+    }, {
+      key: "getApplicationId",
+      value: function getApplicationId() {
+        return this.applicationID;
+      }
+    }, {
+      key: "getUserId",
+      value: function getUserId() {
+        return this.userID;
+      }
+    }], [{
+      key: "getCurrentAccessToken",
+      value: function getCurrentAccessToken() {
+        return new Promise(function (resolve, reject) {
+          AccessToken.getCurrentAccessToken(function (tokenMap) {
+            if (tokenMap) {
+              resolve(new FBAccessToken(tokenMap));
+            } else {
+              resolve(null);
+            }
+          });
+        });
+      }
+    }, {
+      key: "setCurrentAccessToken",
+      value: function setCurrentAccessToken(accessToken) {
+        AccessToken.setCurrentAccessToken(accessToken);
+      }
+    }, {
+      key: "refreshCurrentAccessTokenAsync",
+      value: function refreshCurrentAccessTokenAsync() {
+        return AccessToken.refreshCurrentAccessTokenAsync();
+      }
+    }]);
+
+    return FBAccessToken;
+  }();
+
+  module.exports = FBAccessToken;
+},686,[12],"react-native-fbsdk/js/FBAccessToken.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var AppEventsLogger = require(_dependencyMap[0], 'react-native').NativeModules.FBAppEventsLogger;
+
+  module.exports = {
+    setFlushBehavior: function setFlushBehavior(flushBehavior) {
+      AppEventsLogger.setFlushBehavior(flushBehavior);
+    },
+    logEvent: function logEvent(eventName) {
+      var valueToSum = 0;
+
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
       }
 
-      "regexp" === u(e) && "regexp" === u(t) && (e = e.toString(), t = t.toString());
-      var y = "undefined" == typeof e ? "undefined" : N(e),
-          v = "undefined" == typeof t ? "undefined" : N(t),
-          b = "undefined" !== y || p && p[p.length - 1].lhs && p[p.length - 1].lhs.hasOwnProperty(d),
-          m = "undefined" !== v || p && p[p.length - 1].rhs && p[p.length - 1].rhs.hasOwnProperty(d);
-      if (!b && m) r(new o(g, t));else if (!m && b) r(new i(g, e));else if (u(e) !== u(t)) r(new n(g, e, t));else if ("date" === u(e) && e - t !== 0) r(new n(g, e, t));else if ("object" === y && null !== e && null !== t) {
-        if (p.filter(function (t) {
-          return t.lhs === e;
-        }).length) e !== t && r(new n(g, e, t));else {
-          if (p.push({
-            lhs: e,
-            rhs: t
-          }), Array.isArray(e)) {
-            var w;
-            e.length;
+      if (typeof args[0] === 'number') {
+        valueToSum = args.shift();
+      }
 
-            for (w = 0; w < e.length; w++) {
-              w >= t.length ? r(new a(g, w, new i(void 0, e[w]))) : l(e[w], t[w], r, c, g, w, p);
-            }
+      var parameters = null;
 
-            for (; w < t.length;) {
-              r(new a(g, w, new o(void 0, t[w++])));
-            }
-          } else {
-            var x = Object.keys(e),
-                S = Object.keys(t);
-            x.forEach(function (n, o) {
-              var i = S.indexOf(n);
-              i >= 0 ? (l(e[n], t[n], r, c, g, n, p), S = f(S, i)) : l(e[n], void 0, r, c, g, n, p);
-            }), S.forEach(function (e) {
-              l(void 0, t[e], r, c, g, e, p);
+      if (typeof args[0] === 'object') {
+        parameters = args[0];
+      }
+
+      AppEventsLogger.logEvent(eventName, valueToSum, parameters);
+    },
+    logPurchase: function logPurchase(purchaseAmount, currencyCode, parameters) {
+      AppEventsLogger.logPurchase(purchaseAmount, currencyCode, parameters);
+    },
+    logPushNotificationOpen: function logPushNotificationOpen(payload) {
+      AppEventsLogger.logPushNotificationOpen(payload);
+    },
+    flush: function flush() {
+      AppEventsLogger.flush();
+    },
+    setUserID: function setUserID(userID) {
+      AppEventsLogger.setUserID(userID);
+    },
+    getUserID: function getUserID() {
+      return regeneratorRuntime.async(function getUserID$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return regeneratorRuntime.awrap(AppEventsLogger.getUserID());
+
+            case 2:
+              return _context.abrupt("return", _context.sent);
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, null, this);
+    },
+    updateUserProperties: function updateUserProperties(parameters) {
+      AppEventsLogger.updateUserProperties(parameters);
+    },
+    setPushNotificationsDeviceToken: function setPushNotificationsDeviceToken(deviceToken) {
+      AppEventsLogger.setPushNotificationsDeviceToken(deviceToken);
+    },
+    setPushNotificationsRegistrationId: function setPushNotificationsRegistrationId(registrationId) {
+      AppEventsLogger.setPushNotificationsRegistrationId(registrationId);
+    }
+  };
+},687,[12],"react-native-fbsdk/js/FBAppEventsLogger.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var AppInviteDialog = require(_dependencyMap[0], 'react-native').NativeModules.FBAppInviteDialog;
+
+  module.exports = {
+    canShow: function canShow() {
+      return AppInviteDialog.canShow();
+    },
+    show: function show(appInviteContent) {
+      return AppInviteDialog.show(appInviteContent);
+    }
+  };
+},688,[12],"react-native-fbsdk/js/FBAppInviteDialog.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var GameRequestDialog = require(_dependencyMap[0], 'react-native').NativeModules.FBGameRequestDialog;
+
+  module.exports = {
+    canShow: function canShow() {
+      return GameRequestDialog.canShow();
+    },
+    show: function show(gameRequestContent) {
+      return GameRequestDialog.show(gameRequestContent);
+    }
+  };
+},689,[12],"react-native-fbsdk/js/FBGameRequestDialog.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  var FBGraphRequest = function () {
+    function FBGraphRequest(graphPath, config, callback) {
+      _classCallCheck(this, FBGraphRequest);
+
+      this.graphPath = graphPath;
+      this.config = config ? config : {};
+      this.callback = callback ? callback : function () {};
+    }
+
+    _createClass(FBGraphRequest, [{
+      key: "addStringParameter",
+      value: function addStringParameter(paramString, key) {
+        if (this.config != null && this.config.parameters != null) {
+          this.config.parameters[key] = {
+            string: paramString
+          };
+        }
+      }
+    }]);
+
+    return FBGraphRequest;
+  }();
+
+  module.exports = FBGraphRequest;
+},690,[],"react-native-fbsdk/js/FBGraphRequest.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  var NativeGraphRequestManager = require(_dependencyMap[0], 'react-native').NativeModules.FBGraphRequest;
+
+  function _verifyParameters(request) {
+    if (request.config && request.config.parameters) {
+      for (var key in request.config.parameters) {
+        var param = request.config.parameters[key];
+
+        if (typeof param === 'object' && param.string) {
+          continue;
+        }
+
+        throw new Error("Unexpected value for parameter '" + key + "'. Request parameters " + "need to be objects with a 'string' field.");
+      }
+    }
+  }
+
+  var FBGraphRequestManager = function () {
+    function FBGraphRequestManager() {
+      _classCallCheck(this, FBGraphRequestManager);
+
+      this.requestBatch = [];
+      this.requestCallbacks = [];
+    }
+
+    _createClass(FBGraphRequestManager, [{
+      key: "addRequest",
+      value: function addRequest(request) {
+        _verifyParameters(request);
+
+        this.requestBatch.push(request);
+        this.requestCallbacks.push(request.callback);
+        return this;
+      }
+    }, {
+      key: "addBatchCallback",
+      value: function addBatchCallback(callback) {
+        this.batchCallback = callback;
+        return this;
+      }
+    }, {
+      key: "start",
+      value: function start(timeout) {
+        var that = this;
+
+        var callback = function callback(error, result, response) {
+          if (response) {
+            that.requestCallbacks.forEach(function (innerCallback, index, array) {
+              if (innerCallback) {
+                innerCallback(response[index][0], response[index][1]);
+              }
             });
           }
 
-          p.length = p.length - 1;
-        }
-      } else e !== t && ("number" === y && isNaN(e) && isNaN(t) || r(new n(g, e, t)));
-    }
-
-    function c(e, t, r, n) {
-      return n = n || [], l(e, t, function (e) {
-        e && n.push(e);
-      }, r), n.length ? n : void 0;
-    }
-
-    function s(e, t, r) {
-      if (r.path && r.path.length) {
-        var n,
-            o = e[t],
-            i = r.path.length - 1;
-
-        for (n = 0; n < i; n++) {
-          o = o[r.path[n]];
-        }
-
-        switch (r.kind) {
-          case "A":
-            s(o[r.path[n]], r.index, r.item);
-            break;
-
-          case "D":
-            delete o[r.path[n]];
-            break;
-
-          case "E":
-          case "N":
-            o[r.path[n]] = r.rhs;
-        }
-      } else switch (r.kind) {
-        case "A":
-          s(e[t], r.index, r.item);
-          break;
-
-        case "D":
-          e = f(e, t);
-          break;
-
-        case "E":
-        case "N":
-          e[t] = r.rhs;
-      }
-
-      return e;
-    }
-
-    function d(e, t, r) {
-      if (e && t && r && r.kind) {
-        for (var n = e, o = -1, i = r.path ? r.path.length - 1 : 0; ++o < i;) {
-          "undefined" == typeof n[r.path[o]] && (n[r.path[o]] = "number" == typeof r.path[o] ? [] : {}), n = n[r.path[o]];
-        }
-
-        switch (r.kind) {
-          case "A":
-            s(r.path ? n[r.path[o]] : n, r.index, r.item);
-            break;
-
-          case "D":
-            delete n[r.path[o]];
-            break;
-
-          case "E":
-          case "N":
-            n[r.path[o]] = r.rhs;
-        }
-      }
-    }
-
-    function p(e, t, r) {
-      if (r.path && r.path.length) {
-        var n,
-            o = e[t],
-            i = r.path.length - 1;
-
-        for (n = 0; n < i; n++) {
-          o = o[r.path[n]];
-        }
-
-        switch (r.kind) {
-          case "A":
-            p(o[r.path[n]], r.index, r.item);
-            break;
-
-          case "D":
-            o[r.path[n]] = r.lhs;
-            break;
-
-          case "E":
-            o[r.path[n]] = r.lhs;
-            break;
-
-          case "N":
-            delete o[r.path[n]];
-        }
-      } else switch (r.kind) {
-        case "A":
-          p(e[t], r.index, r.item);
-          break;
-
-        case "D":
-          e[t] = r.lhs;
-          break;
-
-        case "E":
-          e[t] = r.lhs;
-          break;
-
-        case "N":
-          e = f(e, t);
-      }
-
-      return e;
-    }
-
-    function g(e, t, r) {
-      if (e && t && r && r.kind) {
-        var n,
-            o,
-            i = e;
-
-        for (o = r.path.length - 1, n = 0; n < o; n++) {
-          "undefined" == typeof i[r.path[n]] && (i[r.path[n]] = {}), i = i[r.path[n]];
-        }
-
-        switch (r.kind) {
-          case "A":
-            p(i[r.path[n]], r.index, r.item);
-            break;
-
-          case "D":
-            i[r.path[n]] = r.lhs;
-            break;
-
-          case "E":
-            i[r.path[n]] = r.lhs;
-            break;
-
-          case "N":
-            delete i[r.path[n]];
-        }
-      }
-    }
-
-    function h(e, t, r) {
-      if (e && t) {
-        var n = function n(_n) {
-          r && !r(e, t, _n) || d(e, t, _n);
+          if (that.batchCallback) {
+            that.batchCallback(error, result);
+          }
         };
 
-        l(e, t, n);
+        NativeGraphRequestManager.start(this.requestBatch, timeout || 0, callback);
       }
-    }
+    }]);
 
-    function y(e) {
-      return "color: " + F[e].color + "; font-weight: bold";
-    }
+    return FBGraphRequestManager;
+  }();
 
-    function v(e) {
-      var t = e.kind,
-          r = e.path,
-          n = e.lhs,
-          o = e.rhs,
-          i = e.index,
-          a = e.item;
+  module.exports = FBGraphRequestManager;
+},691,[12],"react-native-fbsdk/js/FBGraphRequestManager.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
 
-      switch (t) {
-        case "E":
-          return [r.join("."), n, "→", o];
+  var LoginManager = require(_dependencyMap[0], 'react-native').NativeModules.FBLoginManager;
 
-        case "N":
-          return [r.join("."), o];
-
-        case "D":
-          return [r.join(".")];
-
-        case "A":
-          return [r.join(".") + "[" + i + "]", a];
-
-        default:
-          return [];
-      }
-    }
-
-    function b(e, t, r, n) {
-      var o = c(e, t);
-
-      try {
-        n ? r.groupCollapsed("diff") : r.group("diff");
-      } catch (e) {
-        r.log("diff");
-      }
-
-      o ? o.forEach(function (e) {
-        var t = e.kind,
-            n = v(e);
-        r.log.apply(r, ["%c " + F[t].text, y(t)].concat(P(n)));
-      }) : r.log("—— no diff ——");
-
-      try {
-        r.groupEnd();
-      } catch (e) {
-        r.log("—— diff end —— ");
-      }
-    }
-
-    function m(e, t, r, n) {
-      switch ("undefined" == typeof e ? "undefined" : N(e)) {
-        case "object":
-          return "function" == typeof e[n] ? e[n].apply(e, P(r)) : e[n];
-
-        case "function":
-          return e(t);
-
-        default:
-          return e;
-      }
-    }
-
-    function w(e) {
-      var t = e.timestamp,
-          r = e.duration;
-      return function (e, n, o) {
-        var i = ["action"];
-        return i.push("%c" + String(e.type)), t && i.push("%c@ " + n), r && i.push("%c(in " + o.toFixed(2) + " ms)"), i.join(" ");
-      };
-    }
-
-    function x(e, t) {
-      var r = t.logger,
-          n = t.actionTransformer,
-          o = t.titleFormatter,
-          i = void 0 === o ? w(t) : o,
-          a = t.collapsed,
-          f = t.colors,
-          u = t.level,
-          l = t.diff,
-          c = "undefined" == typeof t.titleFormatter;
-      e.forEach(function (o, s) {
-        var d = o.started,
-            p = o.startedTime,
-            g = o.action,
-            h = o.prevState,
-            y = o.error,
-            v = o.took,
-            w = o.nextState,
-            x = e[s + 1];
-        x && (w = x.prevState, v = x.started - d);
-        var S = n(g),
-            k = "function" == typeof a ? a(function () {
-          return w;
-        }, g, o) : a,
-            j = D(p),
-            E = f.title ? "color: " + f.title(S) + ";" : "",
-            A = ["color: gray; font-weight: lighter;"];
-        A.push(E), t.timestamp && A.push("color: gray; font-weight: lighter;"), t.duration && A.push("color: gray; font-weight: lighter;");
-        var O = i(S, j, v);
-
-        try {
-          k ? f.title && c ? r.groupCollapsed.apply(r, ["%c " + O].concat(A)) : r.groupCollapsed(O) : f.title && c ? r.group.apply(r, ["%c " + O].concat(A)) : r.group(O);
-        } catch (e) {
-          r.log(O);
-        }
-
-        var N = m(u, S, [h], "prevState"),
-            P = m(u, S, [S], "action"),
-            C = m(u, S, [y, h], "error"),
-            F = m(u, S, [w], "nextState");
-        if (N) if (f.prevState) {
-          var L = "color: " + f.prevState(h) + "; font-weight: bold";
-          r[N]("%c prev state", L, h);
-        } else r[N]("prev state", h);
-        if (P) if (f.action) {
-          var T = "color: " + f.action(S) + "; font-weight: bold";
-          r[P]("%c action    ", T, S);
-        } else r[P]("action    ", S);
-        if (y && C) if (f.error) {
-          var M = "color: " + f.error(y, h) + "; font-weight: bold;";
-          r[C]("%c error     ", M, y);
-        } else r[C]("error     ", y);
-        if (F) if (f.nextState) {
-          var _ = "color: " + f.nextState(w) + "; font-weight: bold";
-
-          r[F]("%c next state", _, w);
-        } else r[F]("next state", w);
-        l && b(h, w, r, k);
-
-        try {
-          r.groupEnd();
-        } catch (e) {
-          r.log("—— log end ——");
-        }
-      });
-    }
-
-    function S() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-          t = _extends({}, L, e),
-          r = t.logger,
-          n = t.stateTransformer,
-          o = t.errorTransformer,
-          i = t.predicate,
-          a = t.logErrors,
-          f = t.diffPredicate;
-
-      if ("undefined" == typeof r) return function () {
-        return function (e) {
-          return function (t) {
-            return e(t);
-          };
-        };
-      };
-      if (e.getState && e.dispatch) return console.error("[redux-logger] redux-logger not installed. Make sure to pass logger instance as middleware:\n// Logger with default options\nimport { logger } from 'redux-logger'\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n)\n// Or you can create your own logger with custom options http://bit.ly/redux-logger-options\nimport createLogger from 'redux-logger'\nconst logger = createLogger({\n  // ...options\n});\nconst store = createStore(\n  reducer,\n  applyMiddleware(logger)\n)\n"), function () {
-        return function (e) {
-          return function (t) {
-            return e(t);
-          };
-        };
-      };
-      var u = [];
-      return function (e) {
-        var r = e.getState;
-        return function (e) {
-          return function (l) {
-            if ("function" == typeof i && !i(r, l)) return e(l);
-            var c = {};
-            u.push(c), c.started = O.now(), c.startedTime = new Date(), c.prevState = n(r()), c.action = l;
-            var s = void 0;
-            if (a) try {
-              s = e(l);
-            } catch (e) {
-              c.error = o(e);
-            } else s = e(l);
-            c.took = O.now() - c.started, c.nextState = n(r());
-            var d = t.diff && "function" == typeof f ? f(r, l) : t.diff;
-            if (x(u, _extends({}, t, {
-              diff: d
-            })), u.length = 0, c.error) throw c.error;
-            return s;
-          };
-        };
-      };
-    }
-
-    var k,
-        j,
-        E = function E(e, t) {
-      return new Array(t + 1).join(e);
+  module.exports = {
+    logInWithReadPermissions: function logInWithReadPermissions(permissions) {
+      return LoginManager.logInWithReadPermissions(permissions);
     },
-        A = function A(e, t) {
-      return E("0", t - e.toString().length) + e;
+    logInWithPublishPermissions: function logInWithPublishPermissions(permissions) {
+      return LoginManager.logInWithPublishPermissions(permissions);
     },
-        D = function D(e) {
-      return A(e.getHours(), 2) + ":" + A(e.getMinutes(), 2) + ":" + A(e.getSeconds(), 2) + "." + A(e.getMilliseconds(), 3);
+    getLoginBehavior: function getLoginBehavior() {
+      return LoginManager.getLoginBehavior();
     },
-        O = "undefined" != typeof performance && null !== performance && "function" == typeof performance.now ? performance : Date,
-        N = "function" == typeof Symbol && "symbol" == typeof (typeof Symbol === "function" ? Symbol.iterator : "@@iterator") ? function (e) {
-      return typeof e;
-    } : function (e) {
-      return e && "function" == typeof Symbol && e.constructor === Symbol && e !== (typeof Symbol === "function" ? Symbol.prototype : "@@prototype") ? "symbol" : typeof e;
+    setLoginBehavior: function setLoginBehavior(loginBehavior) {
+      LoginManager.setLoginBehavior(loginBehavior);
     },
-        P = function P(e) {
-      if (Array.isArray(e)) {
-        for (var t = 0, r = Array(e.length); t < e.length; t++) {
-          r[t] = e[t];
-        }
+    getDefaultAudience: function getDefaultAudience() {
+      return LoginManager.getDefaultAudience();
+    },
+    setDefaultAudience: function setDefaultAudience(defaultAudience) {
+      LoginManager.setDefaultAudience(defaultAudience);
+    },
+    logOut: function logOut() {
+      LoginManager.logOut();
+    }
+  };
+},692,[12],"react-native-fbsdk/js/FBLoginManager.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
 
-        return r;
-      }
+  var MessageDialog = require(_dependencyMap[0], 'react-native').NativeModules.FBMessageDialog;
 
-      return Array.from(e);
+  module.exports = {
+    canShow: function canShow(shareContent) {
+      return MessageDialog.canShow(shareContent);
     },
-        C = [];
-
-    k = "object" === ("undefined" == typeof global ? "undefined" : N(global)) && global ? global : "undefined" != typeof window ? window : {}, j = k.DeepDiff, j && C.push(function () {
-      "undefined" != typeof j && k.DeepDiff === c && (k.DeepDiff = j, j = void 0);
-    }), t(n, r), t(o, r), t(i, r), t(a, r), Object.defineProperties(c, {
-      diff: {
-        value: c,
-        enumerable: !0
-      },
-      observableDiff: {
-        value: l,
-        enumerable: !0
-      },
-      applyDiff: {
-        value: h,
-        enumerable: !0
-      },
-      applyChange: {
-        value: d,
-        enumerable: !0
-      },
-      revertChange: {
-        value: g,
-        enumerable: !0
-      },
-      isConflict: {
-        value: function value() {
-          return "undefined" != typeof j;
-        },
-        enumerable: !0
-      },
-      noConflict: {
-        value: function value() {
-          return C && (C.forEach(function (e) {
-            e();
-          }), C = null), c;
-        },
-        enumerable: !0
-      }
-    });
-
-    var F = {
-      E: {
-        color: "#2196F3",
-        text: "CHANGED:"
-      },
-      N: {
-        color: "#4CAF50",
-        text: "ADDED:"
-      },
-      D: {
-        color: "#F44336",
-        text: "DELETED:"
-      },
-      A: {
-        color: "#2196F3",
-        text: "ARRAY:"
-      }
+    show: function show(shareContent) {
+      return MessageDialog.show(shareContent);
     },
-        L = {
-      level: "log",
-      logger: console,
-      logErrors: !0,
-      collapsed: void 0,
-      predicate: void 0,
-      duration: !1,
-      timestamp: !0,
-      stateTransformer: function stateTransformer(e) {
-        return e;
-      },
-      actionTransformer: function actionTransformer(e) {
-        return e;
-      },
-      errorTransformer: function errorTransformer(e) {
-        return e;
-      },
-      colors: {
-        title: function title() {
-          return "inherit";
-        },
-        prevState: function prevState() {
-          return "#9E9E9E";
-        },
-        action: function action() {
-          return "#03A9F4";
-        },
-        nextState: function nextState() {
-          return "#4CAF50";
-        },
-        error: function error() {
-          return "#F20404";
-        }
-      },
-      diff: !1,
-      diffPredicate: void 0,
-      transformer: void 0
-    },
-        T = function T() {
-      var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-          t = e.dispatch,
-          r = e.getState;
-      return "function" == typeof t || "function" == typeof r ? S()({
-        dispatch: t,
-        getState: r
-      }) : void console.error("\n[redux-logger v3] BREAKING CHANGE\n[redux-logger v3] Since 3.0.0 redux-logger exports by default logger with default settings.\n[redux-logger v3] Change\n[redux-logger v3] import createLogger from 'redux-logger'\n[redux-logger v3] to\n[redux-logger v3] import { createLogger } from 'redux-logger'\n");
-    };
+    setShouldFailOnDataError: function setShouldFailOnDataError(shouldFailOnDataError) {
+      MessageDialog.setShouldFailOnDataError(shouldFailOnDataError);
+    }
+  };
+},693,[12],"react-native-fbsdk/js/FBMessageDialog.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
 
-    e.defaults = L, e.createLogger = S, e.logger = T, e.default = T, Object.defineProperty(e, "__esModule", {
-      value: !0
-    });
+  var ShareApi = require(_dependencyMap[0], 'react-native').NativeModules.FBShareApi;
+
+  var ShareOpenGraphObject = require(_dependencyMap[1], './models/FBShareOpenGraphObject');
+
+  module.exports = {
+    canShare: function canShare(shareContent) {
+      return ShareApi.canShare(shareContent);
+    },
+    createOpenGraphObject: function createOpenGraphObject(openGraphObject) {
+      return ShareApi.createOpenGraphObject(openGraphObject);
+    },
+    share: function share(shareContent, graphNode, message) {
+      return ShareApi.share(shareContent, graphNode, message);
+    }
+  };
+},694,[12,685],"react-native-fbsdk/js/FBShareApi.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var ShareDialog = require(_dependencyMap[0], 'react-native').NativeModules.FBShareDialog;
+
+  module.exports = {
+    canShow: function canShow(shareContent) {
+      return ShareDialog.canShow(shareContent);
+    },
+    show: function show(shareContent) {
+      return ShareDialog.show(shareContent);
+    },
+    setMode: function setMode(mode) {
+      ShareDialog.setMode(mode);
+    },
+    setShouldFailOnDataError: function setShouldFailOnDataError(shouldFailOnDataError) {
+      ShareDialog.setShouldFailOnDataError(shouldFailOnDataError);
+    }
+  };
+},695,[12],"react-native-fbsdk/js/FBShareDialog.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _react2 = require(_dependencyMap[0], "react");
+
+  var React = _interopRequireWildcard(_react2);
+
+  var _index = require(_dependencyMap[1], "./../../react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  var _jsxFileName = "/Users/rodolfosilva/workspace/react-native/LuxApp/node_modules/react-native-fbsdk/js/FBLikeView.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _propTypes = require(_dependencyMap[2], "prop-types");
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _reactNative = require(_dependencyMap[3], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    LikeView: {
+      displayName: "LikeView"
+    }
+  };
+
+  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/rodolfosilva/workspace/react-native/LuxApp/node_modules/react-native-fbsdk/js/FBLikeView.js",
+    components: _components,
+    locals: [module],
+    imports: [React.default]
   });
-},680,[],"redux-logger/dist/redux-logger.js");
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _reactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var LikeView = _wrapComponent("LikeView")(function (_React$Component) {
+    _inherits(LikeView, _React$Component);
+
+    function LikeView() {
+      _classCallCheck(this, LikeView);
+
+      return _possibleConstructorReturn(this, (LikeView.__proto__ || Object.getPrototypeOf(LikeView)).apply(this, arguments));
+    }
+
+    _createClass(LikeView, [{
+      key: "render",
+      value: function render() {
+        return React.createElement(RCTFBLikeView, _extends({}, this.props, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 82
+          }
+        }));
+      }
+    }]);
+
+    return LikeView;
+  }(React.Component));
+
+  LikeView.propTypes = _extends({}, _reactNative.ViewPropTypes, {
+    objectIdAndType: _propTypes2.default.object.isRequired,
+    likeViewStyle: _propTypes2.default.oneOf(['standard', 'button', 'box_count']),
+    auxiliaryViewPosition: _propTypes2.default.oneOf(['top', 'bottom', 'inline']),
+    horizontalAlignment: _propTypes2.default.oneOf(['center', 'left', 'right']),
+    foregroundColor: _propTypes2.default.number,
+    soundEnabled: _propTypes2.default.bool
+  });
+
+  var styles = _reactNative.StyleSheet.create({
+    defaultButtonStyle: {
+      height: 65,
+      width: 300
+    }
+  });
+
+  LikeView.defaultProps = {
+    style: styles.defaultButtonStyle
+  };
+  var RCTFBLikeView = (0, _reactNative.requireNativeComponent)('RCTFBLikeView', LikeView);
+  module.exports = LikeView;
+},696,[108,175,127,12],"react-native-fbsdk/js/FBLikeView.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _react2 = require(_dependencyMap[0], "react");
+
+  var React = _interopRequireWildcard(_react2);
+
+  var _index = require(_dependencyMap[1], "./../../react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  var _jsxFileName = "/Users/rodolfosilva/workspace/react-native/LuxApp/node_modules/react-native-fbsdk/js/FBLoginButton.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _propTypes = require(_dependencyMap[2], "prop-types");
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _reactNative = require(_dependencyMap[3], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    LoginButton: {
+      displayName: "LoginButton"
+    }
+  };
+
+  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/rodolfosilva/workspace/react-native/LuxApp/node_modules/react-native-fbsdk/js/FBLoginButton.js",
+    components: _components,
+    locals: [module],
+    imports: [React.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _reactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var LoginButton = _wrapComponent("LoginButton")(function (_React$Component) {
+    _inherits(LoginButton, _React$Component);
+
+    function LoginButton() {
+      _classCallCheck(this, LoginButton);
+
+      return _possibleConstructorReturn(this, (LoginButton.__proto__ || Object.getPrototypeOf(LoginButton)).apply(this, arguments));
+    }
+
+    _createClass(LoginButton, [{
+      key: "_eventHandler",
+      value: function _eventHandler(event) {
+        var eventDict = event.nativeEvent;
+
+        if (eventDict.type === 'loginFinished') {
+          if (this.props.onLoginFinished) {
+            this.props.onLoginFinished(eventDict.error, eventDict.result);
+          }
+        } else if (eventDict.type === 'logoutFinished') {
+          if (this.props.onLogoutFinished) {
+            this.props.onLogoutFinished();
+          }
+        }
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        return React.createElement(RCTFBLoginButton, _extends({}, this.props, {
+          onChange: this._eventHandler.bind(this),
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 112
+          }
+        }));
+      }
+    }]);
+
+    return LoginButton;
+  }(React.Component));
+
+  LoginButton.propTypes = _extends({}, _reactNative.ViewPropTypes, {
+    readPermissions: _propTypes2.default.arrayOf(_propTypes2.default.string),
+    publishPermissions: _propTypes2.default.arrayOf(_propTypes2.default.string),
+    onLoginFinished: _propTypes2.default.func,
+    onLogoutFinished: _propTypes2.default.func,
+    loginBehaviorAndroid: _propTypes2.default.oneOf(['native_with_fallback', 'native_only', 'web_only']),
+    loginBehaviorIOS: _propTypes2.default.oneOf(['native', 'browser', 'system_account', 'web']),
+    defaultAudience: _propTypes2.default.oneOf(['only_me', 'friends', 'everyone']),
+    tooltipBehaviorIOS: _propTypes2.default.oneOf(['auto', 'force_display', 'disable'])
+  });
+
+  var styles = _reactNative.StyleSheet.create({
+    defaultButtonStyle: {
+      height: 30,
+      width: 190
+    }
+  });
+
+  LoginButton.defaultProps = {
+    style: styles.defaultButtonStyle
+  };
+  var RCTFBLoginButton = (0, _reactNative.requireNativeComponent)('RCTFBLoginButton', LoginButton, {
+    nativeOnly: {
+      onChange: true
+    }
+  });
+  module.exports = LoginButton;
+},697,[108,175,127,12],"react-native-fbsdk/js/FBLoginButton.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _react2 = require(_dependencyMap[0], "react");
+
+  var React = _interopRequireWildcard(_react2);
+
+  var _index = require(_dependencyMap[1], "./../../react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  var _jsxFileName = "/Users/rodolfosilva/workspace/react-native/LuxApp/node_modules/react-native-fbsdk/js/FBSendButton.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _propTypes = require(_dependencyMap[2], "prop-types");
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _reactNative = require(_dependencyMap[3], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    SendButton: {
+      displayName: "SendButton"
+    }
+  };
+
+  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/rodolfosilva/workspace/react-native/LuxApp/node_modules/react-native-fbsdk/js/FBSendButton.js",
+    components: _components,
+    locals: [module],
+    imports: [React.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _reactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var SendButton = _wrapComponent("SendButton")(function (_React$Component) {
+    _inherits(SendButton, _React$Component);
+
+    function SendButton() {
+      _classCallCheck(this, SendButton);
+
+      return _possibleConstructorReturn(this, (SendButton.__proto__ || Object.getPrototypeOf(SendButton)).apply(this, arguments));
+    }
+
+    _createClass(SendButton, [{
+      key: "render",
+      value: function render() {
+        return React.createElement(RCTFBSendButton, _extends({}, this.props, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 47
+          }
+        }));
+      }
+    }]);
+
+    return SendButton;
+  }(React.Component));
+
+  SendButton.propTypes = _extends({}, _reactNative.ViewPropTypes, {
+    shareContent: _propTypes2.default.object
+  });
+
+  var styles = _reactNative.StyleSheet.create({
+    defaultButtonStyle: {
+      height: 30,
+      width: 80
+    }
+  });
+
+  SendButton.defaultProps = {
+    style: styles.defaultButtonStyle
+  };
+  var RCTFBSendButton = (0, _reactNative.requireNativeComponent)('RCTFBSendButton', SendButton);
+  module.exports = SendButton;
+},698,[108,175,127,12],"react-native-fbsdk/js/FBSendButton.js");
+__d(function (global, require, module, exports, _dependencyMap) {
+  'use strict';
+
+  var _react2 = require(_dependencyMap[0], "react");
+
+  var React = _interopRequireWildcard(_react2);
+
+  var _index = require(_dependencyMap[1], "./../../react-transform-hmr/lib/index.js");
+
+  var _index2 = _interopRequireDefault(_index);
+
+  var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+  var _jsxFileName = "/Users/rodolfosilva/workspace/react-native/LuxApp/node_modules/react-native-fbsdk/js/FBShareButton.js";
+
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+  var _propTypes = require(_dependencyMap[2], "prop-types");
+
+  var _propTypes2 = _interopRequireDefault(_propTypes);
+
+  var _reactNative = require(_dependencyMap[3], "react-native");
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+  function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+  var _components = {
+    ShareButton: {
+      displayName: "ShareButton"
+    }
+  };
+
+  var _reactTransformHmrLibIndexJs2 = (0, _index2.default)({
+    filename: "/Users/rodolfosilva/workspace/react-native/LuxApp/node_modules/react-native-fbsdk/js/FBShareButton.js",
+    components: _components,
+    locals: [module],
+    imports: [React.default]
+  });
+
+  function _wrapComponent(id) {
+    return function (Component) {
+      return _reactTransformHmrLibIndexJs2(Component, id);
+    };
+  }
+
+  var ShareButton = _wrapComponent("ShareButton")(function (_React$Component) {
+    _inherits(ShareButton, _React$Component);
+
+    function ShareButton() {
+      _classCallCheck(this, ShareButton);
+
+      return _possibleConstructorReturn(this, (ShareButton.__proto__ || Object.getPrototypeOf(ShareButton)).apply(this, arguments));
+    }
+
+    _createClass(ShareButton, [{
+      key: "render",
+      value: function render() {
+        return React.createElement(RCTFBShareButton, _extends({}, this.props, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 48
+          }
+        }));
+      }
+    }]);
+
+    return ShareButton;
+  }(React.Component));
+
+  ShareButton.propTypes = _extends({}, _reactNative.ViewPropTypes, {
+    shareContent: _propTypes2.default.object
+  });
+
+  var styles = _reactNative.StyleSheet.create({
+    defaultButtonStyle: {
+      height: 30,
+      width: 80
+    }
+  });
+
+  ShareButton.defaultProps = {
+    style: styles.defaultButtonStyle
+  };
+  var RCTFBShareButton = (0, _reactNative.requireNativeComponent)('RCTFBShareButton', ShareButton);
+  module.exports = ShareButton;
+},699,[108,175,127,12],"react-native-fbsdk/js/FBShareButton.js");
 require(23);
 require(11);
 //# sourceMappingURL=index.map

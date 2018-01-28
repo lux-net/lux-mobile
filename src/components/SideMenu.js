@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { NavigationActions } from 'react-navigation'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 
 const styles = {
   container: {
@@ -24,12 +24,23 @@ const styles = {
   }
 }
 
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Login' })
+  ]
+})
+
 class SideMenu extends Component {
   navigateToScreen = (route) => () => {
     const navigateAction = NavigationActions.navigate({
       routeName: route
     })
     this.props.navigation.dispatch(navigateAction)
+  }
+
+  navigateToLogin = () => () => {
+    this.props.screenProps.rootNavigation.dispatch(resetAction)
   }
 
   render() {
@@ -57,6 +68,12 @@ class SideMenu extends Component {
               <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
                 Page3
               </Text>
+              <Text style={styles.navItemStyle} onPress={this.navigateToLogin()}>
+                Logout
+              </Text>
+              {/* <TouchableOpacity style={styles.navItemStyle} onPress={}>
+                Logout
+              </TouchableOpacity> */}
             </View>
           </View>
         </ScrollView>

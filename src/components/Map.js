@@ -23,12 +23,7 @@ class Map extends React.Component {
         latitude: LATITUDE,
         longitude: LONGITUDE
       }),
-      markers: [
-        { coordinate: { latitude: -12.24720942270704, longitude: -38.97558370605111 } },
-        { coordinate: { latitude: -12.247866679212539, longitude: -38.975956197828054 } },
-        { coordinate: { latitude: -12.248007238841016, longitude: -38.97487862035632 } },
-        { coordinate: { latitude: -12.247460071567463, longitude: -38.9751317538321 } }
-      ]
+      markers: []
     }
   }
 
@@ -43,7 +38,18 @@ class Map extends React.Component {
 
   _onChange({ latitude, longitude, latitudeDelta, longitudeDelta }) {
     if (!this.props.onChange) return
-    this.props.onChange({ latitude, longitude, latitudeDelta, longitudeDelta })
+
+    const northEast = {
+      latitude: latitude + latitudeDelta / 2,
+      longitude: longitude + longitudeDelta / 2
+    }
+
+    const southWest = {
+      latitude: latitude - latitudeDelta / 2,
+      longitude: longitude - longitudeDelta / 2
+    }
+
+    this.props.onChange({ latitude, longitude, latitudeDelta, longitudeDelta, northEast, southWest })
   }
 
   render() {
@@ -61,8 +67,8 @@ class Map extends React.Component {
           }}
         >
 
-          {this.props.markers.map((marker, key) => (
-            <MapView.Marker key={key}
+          {this.props.markers.map((marker) => (
+            <MapView.Marker key={marker.__identity}
               coordinate={marker.coordinate}
             />
           ))}

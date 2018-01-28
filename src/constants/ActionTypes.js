@@ -1,2 +1,3 @@
 export const LOAD_LIGHT_MARKERS = 'LOAD_LIGHT_MARKERS'
 export const ADD_LIGHT_MARKER = 'ADD_LIGHT_MARKER'
+export const AUTH = 'AUTH'
