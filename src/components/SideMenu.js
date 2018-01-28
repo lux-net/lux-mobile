@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { NavigationActions } from 'react-navigation'
-import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
+import { ScrollView, Text, Image, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import { connect } from 'react-redux'
+import { auth } from '../actions/index'
 
 const styles = {
   container: {
-    paddingTop: 20,
+    paddingTop: 4,
     flex: 1
   },
   navItemStyle: {
@@ -15,8 +17,7 @@ const styles = {
   },
   navSectionStyle: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'lightgrey'
+    alignItems: 'center'
   },
   sectionHeadingStyle: {
     paddingVertical: 10,
@@ -50,26 +51,26 @@ class SideMenu extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <View>
-            <Text style={styles.sectionHeadingStyle}>
-              Nome do fulano
-            </Text>
-            <View style={styles.navSectionStyle}>
-              <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page1')}>
-                Page1
+          <View style={{ flexDirection: 'row', marginBottom: 16, alignItems: 'center' }}>
+            <View style={{ width: 80, height: 80, marginRight: 14 }}>
+              <Image source={{ uri: this.props.auth.data.avatar }} style={{ height: 80, width: 80, borderRadius: 80, resizeMode: 'stretch', margin: 5 }} />
+            </View>
+            <View>
+              <Text style={{ fontWeight: '500', fontSize: 20, color: '#333' }}>
+                {this.props.auth.data.name}
+              </Text>
+              <Text style={{ marginTop: 0, fontSize: 14, color: '#666' }}>
+                {this.props.auth.data.email}
+                {/* {this.props.auth.data.__identity} */}
               </Text>
             </View>
           </View>
-          <View>
-            <Text style={styles.sectionHeadingStyle}>
-              Section 2
+
+          <View style={styles.navSectionStyle}>
+            <Ionicon style={{ marginLeft: 16, marginRight: 16 }} name="md-exit" size={20} color="#5C2D91" />
+            <Text style={styles.navItemStyle} onPress={this.navigateToLogin()}>
+              Logout
             </Text>
-            <View style={styles.navSectionStyle}>
-              <Ionicon style={{ marginLeft: 16, marginRight: 16 }} name="md-exit" size={20} color="#5C2D91" />
-              <Text style={styles.navItemStyle} onPress={this.navigateToLogin()}>
-                Logout
-              </Text>
-            </View>
           </View>
         </ScrollView>
         <View style={styles.footerContainer}>
@@ -88,4 +89,8 @@ SideMenu.propTypes = {
   navigation: PropTypes.object
 }
 
-export default SideMenu
+
+const mapStateToProps = ({ auth }) => ({ auth })
+const mapDispatchToProps = ({})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideMenu)

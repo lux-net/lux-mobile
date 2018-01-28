@@ -1,12 +1,18 @@
 import axios from 'axios'
 import { LOAD_LIGHT_MARKERS, ADD_LIGHT_MARKER, AUTH } from '../constants/ActionTypes'
+import { getAccessToken, setCurrentUser, getCurrentUser } from './session'
 
 export const saveFacebookToken = (token) => ({
   type: AUTH,
   payload: async () => {
+    const token = await getAccessToken()
+
     try {
       console.log(`http://lux.rodolfosilva.com:1003/login`, { token })
       const { data } = await axios.post(`http://lux.rodolfosilva.com:1003/login`, { token })
+
+      console.log(data)
+      setCurrentUser(data)
       return data
     } catch (error) {
       return []
@@ -18,8 +24,15 @@ export const loadLightMarkers = ({ latitude, longitude, latitudeDelta, longitude
   type: LOAD_LIGHT_MARKERS,
   payload: async () => {
     try {
+      const currentUser = getCurrentUser()
+      console.log(currentUser)
       console.log(`http://lux.rodolfosilva.com:1003/light-markers?northEast[latitude]=${northEast.latitude}&northEast[longitude]=${northEast.longitude}&southWest[latitude]=${southWest.latitude}&southWest[longitude]=${southWest.longitude}`)
-      const { data } = await axios.get(`http://lux.rodolfosilva.com:1003/light-markers?northEast[latitude]=${northEast.latitude}&northEast[longitude]=${northEast.longitude}&southWest[latitude]=${southWest.latitude}&southWest[longitude]=${southWest.longitude}`)
+      const { data } = await axios.get(`http://lux.rodolfosilva.com:1003/light-markers?northEast[latitude]=${northEast.latitude}&northEast[longitude]=${northEast.longitude}&southWest[latitude]=${southWest.latitude}&southWest[longitude]=${southWest.longitude}`, {
+        headers: {
+          Key: currentUser.facebookId
+        }
+      })
+      console.log(data)
       return data
     } catch (error) {
       return []
@@ -31,12 +44,21 @@ export const addLightMarker = ({ latitude, longitude, iluminated }) => ({
   type: ADD_LIGHT_MARKER,
   payload: async () => {
     try {
-      const { data } = await axios.post('http://lux.rodolfosilva.com:1003/light-markers', {
-        lightMarker: {
-          coordinate: { latitude, longitude }
+      const currentUser = getCurrentUser()
+      const { data } = await axios.post(
+        'http://lux.rodolfosilva.com:1003/light-markers',
+        {
+          lightMarker: {
+            iluminated,
+            coordinate: { latitude, longitude }
+          }
         },
-        iluminated
-      })
+        {
+          headers: {
+            Key: currentUser.facebookId
+          }
+        }
+      )
       return data
     } catch (error) {
       console.log('ERROR', error)
