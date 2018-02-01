@@ -2,7 +2,8 @@ import React from 'react'
 import PropType from 'prop-types'
 import { StyleSheet, View, Dimensions } from 'react-native'
 
-import MapView from 'react-native-maps'
+import { Marker } from 'react-native-maps'
+import MapView from 'react-native-map-clustering'
 
 const screen = Dimensions.get('window')
 
@@ -18,7 +19,7 @@ const escuroIco = require('../assets/escuro.png')
 
 class Map extends React.PureComponent {
   animateToRegion({ latitude, longitude }) {
-    this.mapview.animateToRegion({
+    this.mapview._root.animateToRegion({
       latitude,
       longitude,
       latitudeDelta: LATITUDE_DELTA,
@@ -53,7 +54,7 @@ class Map extends React.PureComponent {
       if (marker.iluminated) image = iluminadoIco
     }
 
-    return (<MapView.Marker key={marker.__identity} coordinate={marker.coordinate} image={image} />)
+    return (<Marker key={marker.__identity} coordinate={marker.coordinate} image={image} />)
   }
 
   render() {
@@ -63,7 +64,7 @@ class Map extends React.PureComponent {
           style={styles.map}
           onRegionChangeComplete={(position) => this._onChange(position)}
           ref={mapview => { this.mapview = mapview }}
-          initialRegion={{
+          region={{
             latitude: LATITUDE,
             longitude: LONGITUDE,
             latitudeDelta: LATITUDE_DELTA,
