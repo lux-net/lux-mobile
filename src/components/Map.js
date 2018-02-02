@@ -17,7 +17,7 @@ const escuroNaoConfirmadoIco = require('../assets/escuro-nao-confirmado.png')
 const iluminadoIco = require('../assets/iluminado.png')
 const escuroIco = require('../assets/escuro.png')
 
-class Map extends React.PureComponent {
+class Map extends React.Component {
   animateToRegion({ latitude, longitude }) {
     this.mapview._root.animateToRegion({
       latitude,
@@ -27,17 +27,29 @@ class Map extends React.PureComponent {
     })
   }
 
+  shouldComponentUpdate(prevStatus) {
+    return !this.moving
+  }
+
+  onRegionChange() {
+    this.moving = true
+  }
+
   _onChange({ latitude, longitude, latitudeDelta, longitudeDelta }) {
+    this.moving = false
     if (!this.props.onChange) return
 
-    const northEast = {
-      latitude: latitude + latitudeDelta / 2,
-      longitude: longitude + longitudeDelta / 2
-    }
+    const baseLatitudeDelta = latitudeDelta / 2
+    const baseLongitudeDelta = longitudeDelta / 2
 
     const southWest = {
-      latitude: latitude - latitudeDelta / 2,
-      longitude: longitude - longitudeDelta / 2
+      latitude: latitude + baseLatitudeDelta,
+      longitude: longitude + baseLongitudeDelta
+    }
+
+    const northEast = {
+      latitude: latitude - baseLatitudeDelta,
+      longitude: longitude - baseLongitudeDelta
     }
 
     this.props.onChange({ latitude, longitude, latitudeDelta, longitudeDelta, northEast, southWest })
@@ -63,6 +75,7 @@ class Map extends React.PureComponent {
         <MapView
           style={styles.map}
           onRegionChangeComplete={(position) => this._onChange(position)}
+          onRegionChange={(position) => this.onRegionChange(position)}
           ref={mapview => { this.mapview = mapview }}
           region={{
             latitude: LATITUDE,

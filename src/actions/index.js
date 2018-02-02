@@ -17,6 +17,13 @@ export const saveFacebookToken = (token) => ({
   }
 })
 
+const isBounded = (northEast, southWest, coordinate) => {
+  if (coordinate.latitude < northEast.latitude || coordinate.latitude > southWest.latitude) return false
+  if (coordinate.longitude < northEast.longitude || coordinate.longitude > southWest.longitude) return false
+
+  return true
+}
+
 export const loadLightMarkers = ({ latitude, longitude, latitudeDelta, longitudeDelta, northEast, southWest }) => ({
   type: LOAD_LIGHT_MARKERS,
   payload: async () => {
@@ -27,7 +34,7 @@ export const loadLightMarkers = ({ latitude, longitude, latitudeDelta, longitude
           Key: currentUser.facebookId
         }
       })
-      return data
+      return data.filter(({ coordinate }) => isBounded(northEast, southWest, coordinate))
     } catch (error) {
       return []
     }
